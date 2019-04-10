@@ -15,14 +15,14 @@ public class ClientThread extends Thread {
     private String myHost;
     
 
-    public static final int portNumber = 9001;
+    public static final int portNumber = 9001; //server port number
     
-    public ClientThread(String command, String myHost) {
+    public ClientThread(String command, String myHost) { //constructor
         this.serverCommand = command;
         this.elaspedTime = 0;
         this.myHost = myHost;
     }
-    
+    //get methods
     public double getElaspedTime() {
         return this.elaspedTime;
     }
@@ -40,22 +40,22 @@ public class ClientThread extends Thread {
             String str;
 	    String line = null;
    
-            Socket socket = new Socket(this.myHost, this.portNumber);
-            PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            Socket socket = new Socket(this.myHost, this.portNumber); //creates socket
+            PrintWriter output = new PrintWriter(socket.getOutputStream(), true); //output for server
+            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream())); //input from server
 	    
-	    totalTime = 0;
-	    startTimer(); 
-            output.println(this.serverCommand);
+	    totalTime = 0; //initialize total time for the getmethod
+	    startTimer(); //get current time in milliseconds and starts timer
+            output.println(this.serverCommand); //prints command to be executed
 	    
-	    while((line = input.readLine()) != null) {
+	    while((line = input.readLine()) != null) { //reads response from server
 	
 	
-            	System.out.println(line);
+            	System.out.println(line); // prints response from server
 		
 	    }
-	    endTimer();
-	    this.totalTime += this.elaspedTime;
+	    endTimer(); //ends timer
+	    this.totalTime += this.elaspedTime; //sets total time from elapsed time calucated in endTimer()
 	    System.out.println("----------------------------------------------------------------------");
             socket.close();
         }
@@ -71,11 +71,11 @@ public class ClientThread extends Thread {
     }
     
     private void startTimer() {
-        this.startTime = System.currentTimeMillis();
+        this.startTime = System.currentTimeMillis(); //gets current time in Milliseconds
     }
     
     private void endTimer() {
-        long currentTime = System.currentTimeMillis();
-        this.elaspedTime = currentTime - this.startTime;
+        long currentTime = System.currentTimeMillis(); //gets current time in milliseconds
+        this.elaspedTime = currentTime - this.startTime; // current time - star time = elapsed time
     }
 }

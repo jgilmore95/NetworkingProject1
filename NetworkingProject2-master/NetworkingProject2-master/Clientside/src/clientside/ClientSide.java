@@ -34,25 +34,25 @@ public class ClientSide {
             threadCount = 1;
         }
         
-        ui = new UserInterface(threadCount);
-        while (running) {
-            ui.displayMenu();
-            command = ui.getCommand();
+        ui = new UserInterface(threadCount); //creates UI object from UserInterface class
+        while (running) { //while program is running
+            ui.displayMenu(); //displays input menu from UI class
+            command = ui.getCommand(); //gets command from UI class
 
-            if (command.equals("thread")) {
-                threadCount = ui.changeThreadCount();
+            if (command.equals("thread")) { //if command == thread
+                threadCount = ui.changeThreadCount(); //call change thread from UI
             }
-            else if (command.equals("exit")) {
-                signalServerExit();
+            else if (command.equals("exit")) { //If command is exit
+                signalServerExit(); //call server exit
                 System.out.printf("Ending program%n");
-                running = false;
+                running = false; //program no longer running, exits loop
             }
             else {
-                System.out.printf("Command is: %s%n", command);
+                System.out.printf("Command is: %s%n", command); //print out command
                 System.out.println("From Server: ");
-                generateThreads(threadCount, command, myHost);
-                runThreads();
-                getResults(threadCount);
+                generateThreads(threadCount, command, myHost); //generate threads
+                runThreads(); //execute threads
+                getResults(threadCount); //get results from threads
             }
         }
         
@@ -61,35 +61,35 @@ public class ClientSide {
     
 // Makes the threads
     private static void generateThreads(int threadCount, String command, String myHost) {
-        threads = new ClientThread[threadCount];
+        threads = new ClientThread[threadCount]; //creates thread array from CLIentThread class for amount of threadCount
         
-        for (int i = 0; i < threadCount; i++) {
-            threads[i] = new ClientThread(command, myHost);
+        for (int i = 0; i < threadCount; i++) { //foreach thread
+            threads[i] = new ClientThread(command, myHost); //create thread object for each position of array
         }
     }
 
     private static void getResults(int threadCount) {
-        double sum = 0;
+        double sum = 0; //initialize sum. needed for average
         
         System.out.printf("Server response times (milliseconds): %n");
-        for(ClientThread t : threads) {
-            System.out.printf("%.2f, ", t.getTotalTime());
-	    sum += t.getTotalTime();
+        for(ClientThread t : threads) { //for each thread
+            System.out.printf("%.2f, ", t.getTotalTime()); //print total time for that thread
+	    sum += t.getTotalTime(); //add that time to the sum
         }
-        System.out.printf("%nLatency (mean server response time): %.2f ms", (sum/((double)threadCount)));
-        System.out.printf("%n");
+        System.out.printf("%nLatency (mean server response time): %.2f ms", (sum/((double)threadCount))); //calculate mean response
+        System.out.printf("%n"); //new line
     }
 
     private static void runThreads() {
         int i;
-        boolean running = true;
-        for (i = 0; i < threads.length; i++) {
+        boolean running = true; //program is running
+        for (i = 0; i < threads.length; i++) {//start each thread
             threads[i].start();
         }
         while (running) {
             running = false;
-            for (i = 0; i < threads.length; i++) {
-                if (threads[i].isAlive()) {
+            for (i = 0; i < threads.length; i++) { //check if thread is still alive
+                if (threads[i].isAlive()) { //if thread alive, program is still running
                     running = true;
                 }
             }
@@ -100,10 +100,10 @@ public class ClientSide {
         
         try {
             // What happens when the server ends
-            Socket socket = new Socket(myHost, ClientThread.portNumber);
-            PrintWriter output = new PrintWriter(socket.getOutputStream(), true);
+            Socket socket = new Socket(myHost, ClientThread.portNumber); //creates socket for server
+            PrintWriter output = new PrintWriter(socket.getOutputStream(), true); //receives output from server
             output.printf("exit%n");
-            socket.close();
+            socket.close(); //closes socket
         }
         catch (IOException ex) {}
     }

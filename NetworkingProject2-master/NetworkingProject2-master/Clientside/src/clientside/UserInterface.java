@@ -7,17 +7,17 @@ public class UserInterface {
     
     private int threadCount;
     private String[] serverCommands = {"thread" ,"date", "uptime", "free", "netstat", 
-        "users", "ps aux", "exit"};
+        "users", "ps aux", "exit"}; //server commands in an array
     
-    public UserInterface() {
+    public UserInterface() { //constructor
         this.threadCount = 0;
     }
     
-    public UserInterface(int threadCount) {
+    public UserInterface(int threadCount) { //constructor
         this.threadCount = threadCount;
     }
     
-    public void displayMenu() {
+    public void displayMenu() { //displays menu
         System.out.printf("Select a Command to be run on the server%n");
         System.out.printf("Threads to be used %d%n", this.threadCount);
         System.out.printf("0. Change Thread Count%n");
@@ -32,45 +32,45 @@ public class UserInterface {
         return;
     }
     
-    public int getUserInput() {
+    public int getUserInput() {//gets user input after displayMenu() is displayed
         int number;
-        Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in); //scanner
         
         try {
-            number = input.nextInt();
-            if (number < 0 || number > 7) {
+            number = input.nextInt();//input
+            if (number < 0 || number > 7) { //checks if out of bounds
                 System.out.printf("Invalid Command Given%n");
                 number = getUserInput();
             }
         }
-        catch (InputMismatchException ex) {
+        catch (InputMismatchException ex) {//checks if input is int
             System.out.printf("Invalid Input: Input an Integer only%n");
             number = getUserInput();
         }
         
-        return number;
+        return number; //returns userinput
     }
     
     public String getCommand() {
-        int commandId = this.getUserInput();
+        int commandId = this.getUserInput(); //gets input and sets commandID
         
-        return this.serverCommands[commandId];
+        return this.serverCommands[commandId]; //servercommand == commandID (int) from array of serverCommands
     }
     
-    public int changeThreadCount() {
+    public int changeThreadCount() { //changes thread count
         int newCount = 1;
         
-        System.out.printf("Enter new thread Count: ");
-        Scanner input = new Scanner(System.in);
+        System.out.printf("Enter new thread Count: "); //displays for new count
+        Scanner input = new Scanner(System.in);//scanner
         try {
-            newCount = input.nextInt();
+            newCount = input.nextInt();//input
         }
-        catch (InputMismatchException ex) {
+        catch (InputMismatchException ex) { //catch if not int
             System.out.printf("Invalid Input: Input an Integer only%n");
             newCount = this.changeThreadCount();
         }
 
-        this.threadCount = newCount;
+        this.threadCount = newCount; //sets new thread count from input
         return newCount;
     }
 }
