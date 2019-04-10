@@ -80,7 +80,7 @@ public class ClientSide {
         System.out.printf("%n"); //new line
     }
 
-    private static void runThreads() {
+    private static void runThreads() { //concurrent process, creates new thread until i reaches input thread length
         int i;
         boolean running = true; //program is running
         for (i = 0; i < threads.length; i++) {//start each thread
